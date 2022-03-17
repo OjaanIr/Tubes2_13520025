@@ -37,11 +37,12 @@
             this.radioBFS = new System.Windows.Forms.RadioButton();
             this.radioDFS = new System.Windows.Forms.RadioButton();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(45, 86);
+            this.button1.Location = new System.Drawing.Point(45, 111);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(68, 25);
             this.button1.TabIndex = 0;
@@ -51,18 +52,20 @@
             // 
             // searchButton
             // 
-            this.searchButton.Location = new System.Drawing.Point(46, 318);
+            this.searchButton.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.searchButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.searchButton.Location = new System.Drawing.Point(46, 343);
             this.searchButton.Name = "searchButton";
             this.searchButton.Size = new System.Drawing.Size(148, 23);
             this.searchButton.TabIndex = 1;
             this.searchButton.Text = "Search";
-            this.searchButton.UseVisualStyleBackColor = true;
+            this.searchButton.UseVisualStyleBackColor = false;
             this.searchButton.Click += new System.EventHandler(this.button2_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(128, 91);
+            this.label1.Location = new System.Drawing.Point(128, 116);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(121, 15);
             this.label1.TabIndex = 2;
@@ -72,7 +75,7 @@
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBox1.Location = new System.Drawing.Point(12, 202);
+            this.textBox1.Location = new System.Drawing.Point(12, 227);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(248, 35);
             this.textBox1.TabIndex = 3;
@@ -82,7 +85,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(86, 172);
+            this.label2.Location = new System.Drawing.Point(86, 197);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(93, 15);
             this.label2.TabIndex = 4;
@@ -92,7 +95,7 @@
             // radioBFS
             // 
             this.radioBFS.AutoSize = true;
-            this.radioBFS.Location = new System.Drawing.Point(62, 268);
+            this.radioBFS.Location = new System.Drawing.Point(62, 293);
             this.radioBFS.Name = "radioBFS";
             this.radioBFS.Size = new System.Drawing.Size(44, 19);
             this.radioBFS.TabIndex = 5;
@@ -104,7 +107,7 @@
             // radioDFS
             // 
             this.radioDFS.AutoSize = true;
-            this.radioDFS.Location = new System.Drawing.Point(138, 268);
+            this.radioDFS.Location = new System.Drawing.Point(138, 293);
             this.radioDFS.Name = "radioDFS";
             this.radioDFS.Size = new System.Drawing.Size(45, 19);
             this.radioDFS.TabIndex = 6;
@@ -116,7 +119,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(62, 133);
+            this.checkBox1.Location = new System.Drawing.Point(62, 158);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(142, 19);
             this.checkBox1.TabIndex = 7;
@@ -124,11 +127,23 @@
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Haettenschweiler", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label3.Location = new System.Drawing.Point(45, 34);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(202, 50);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "File Crawler";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.radioDFS);
             this.Controls.Add(this.radioBFS);
@@ -156,5 +171,6 @@
         private RadioButton radioBFS;
         private RadioButton radioDFS;
         private CheckBox checkBox1;
+        private Label label3;
     }
 }
