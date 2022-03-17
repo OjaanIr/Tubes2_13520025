@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using Sysem.Collections.Generic;
+using System.Collections.Generic;
 
 public class BFS
 {
@@ -41,7 +41,7 @@ public class BFS
                         // if file found set found variable to true
                         if (find.Equals(path))
                         {
-                            found = true
+                            found = true;
                         }
                     }
                 }
@@ -51,11 +51,11 @@ public class BFS
         // if file found write "File found!", otherwise write "File not found!"
         if (found)
         {
-            Console.WriteLine("File found!")
+            Console.WriteLine("File found!");
         }
         else
         {
-            Console.WriteLine("File not found!")
+            Console.WriteLine("File not found!");
         }
     } 
 }

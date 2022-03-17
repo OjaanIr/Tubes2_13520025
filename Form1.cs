@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using dfsDavin;
 namespace WinFormsApp2
 {
     public partial class Form1 : Form
@@ -36,26 +37,39 @@ namespace WinFormsApp2
         private void button2_Click(object sender, EventArgs e)
         {
             string rootDir = label1.Text;
-            if(rootDir== "No Directory Selected")
-            {
-                return;
-            }
-            string mode;
-            if (radioBFS.Checked)
-            {
-                mode = "BFS";
-            }
-            else
-            {
-                mode = "DFS";
-            }
-            Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
-            Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
-
+            string lookFor = textBox1.Text;
+            bool isFindAll = checkBox1.Checked;
             string[] dirs = Directory.GetDirectories(@rootDir, "*", SearchOption.AllDirectories);
             string dirName = getFolderOfPath(rootDir);
             string[] filePaths = Directory.GetFiles(@rootDir, "*", SearchOption.TopDirectoryOnly);
+            Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
+            Microsoft.Msagl.Drawing.Graph graph;
 
+            if (rootDir== "No Directory Selected")
+            {
+                return;
+            }
+            //string mode;
+            if (radioBFS.Checked && lookFor!="")
+            {
+                //mode = "BFS";
+            }
+            else if(radioDFS.Checked && lookFor !="")
+            {
+                //mode = "DFS";
+                
+                
+
+            }
+            else
+            {
+                return;
+            }
+            FileDestination filed = new FileDestination(lookFor, isFindAll);
+            graph = filed.DFS(rootDir);
+
+            
+            /*
             foreach (string dir in dirs)
             {
                 string folderName = getFolderOfPath(dir);
@@ -67,7 +81,8 @@ namespace WinFormsApp2
                 string fileName = Path.GetFileName(filePath);
                 graph.AddEdge(dirName, fileName);
             }
-
+            */
+            
             viewer.Graph = graph;
             this.SuspendLayout();
             viewer.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -94,6 +109,11 @@ namespace WinFormsApp2
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
         {
 
         }

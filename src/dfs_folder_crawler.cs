@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using Sysem.Collections.Generic;
+using System.Collections.Generic;
 
 public class DFS
 {
@@ -19,18 +19,18 @@ public class DFS
                 // if the current path is a directory, recur for it
                 if (Directory.Exists(path))
                 {
-                    folder_crawling(path);
+                    folder_crawling(path,"asd");
                 }
                 else
                 {
-                    // if file found write "File found!", otherwise write "File not found!"
+                    // if file found write "File found!", otherwise write "File not found!", äsda
                     if (find.Equals(path))
                     {
-                        Console.WriteLine("File found!")
+                        Console.WriteLine("File found!");
                     }
                     else
                     {
-                        Console.WriteLine("File not found!")
+                        Console.WriteLine("File not found!");
                     }
                 }
             }
