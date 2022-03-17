@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "prnxLTVvwH70XTuK/rt0z0/9NXRyVA27c4oCr+ea2ddjHzP5qrBCPVK7U4UGdm64T1YcXk+QyKWNXEYnlwwxJg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Kiki\\OneDrive - Institut Teknologi Bandung\\Tubes Stima\\WinFormsApp2\\WinFormsApp2\\WinFormsApp2.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Kiki\\.nuget\\packages\\automaticgraphlayout\\1.1.12\\automaticgraphlayout.1.1.12.nupkg.sha512",
+    "C:\\Users\\Kiki\\.nuget\\packages\\automaticgraphlayout.drawing\\1.1.12\\automaticgraphlayout.drawing.1.1.12.nupkg.sha512",
+    "C:\\Users\\Kiki\\.nuget\\packages\\automaticgraphlayout.graphviewergdi\\1.1.12\\automaticgraphlayout.graphviewergdi.1.1.12.nupkg.sha512",
+    "C:\\Users\\Kiki\\.nuget\\packages\\automaticgraphlayout.wpfgraphcontrol\\1.1.12\\automaticgraphlayout.wpfgraphcontrol.1.1.12.nupkg.sha512"
+  ],
+  "logs": []
+}
