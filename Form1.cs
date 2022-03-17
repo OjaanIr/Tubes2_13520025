@@ -38,7 +38,7 @@ namespace WinFormsApp2
         {
             string rootDir = label1.Text;
             string lookFor = textBox1.Text;
-            bool isFindAll = checkBox1.Checked;
+            bool isFindAll = isAllOccurance.Checked;
             string[] dirs = Directory.GetDirectories(@rootDir, "*", SearchOption.AllDirectories);
             string dirName = getFolderOfPath(rootDir);
             string[] filePaths = Directory.GetFiles(@rootDir, "*", SearchOption.TopDirectoryOnly);
@@ -118,4 +118,5 @@ namespace WinFormsApp2
 
         }
     }
+
 }
