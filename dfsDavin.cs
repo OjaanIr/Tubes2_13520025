@@ -9,8 +9,10 @@ namespace dfsDavin
 {
     class FileDestination {
         private string file_name;
+        private string startFullPath;
         private bool found;
         private bool allOccurance;
+        private DirectoryInfo tail;
         private Microsoft.Msagl.Drawing.Graph graph;
 
         public FileDestination(string nama, bool semua) {
@@ -22,8 +24,8 @@ namespace dfsDavin
         public Microsoft.Msagl.Drawing.Graph DFS(string dirpath)
         {
             this.graph = new Microsoft.Msagl.Drawing.Graph("graph");
+            this.startFullPath = dirpath;
             this.graph.AddNode(getFolderOfPath(dirpath));
-
 
             recDFS(dirpath);
             return this.graph;
@@ -35,16 +37,27 @@ namespace dfsDavin
             string[] filePaths = Directory.GetFiles(dir.FullName, "*");
             foreach (string file in filePaths)
             {
-                if (this.found == false)
+                if (this.found != true)
                 {
                     if (Path.GetFileName(file) == this.file_name)
                     {
                         //Console.WriteLine(Path.GetFileName(file) + " ketemu");
                         this.graph.AddEdge(dir.Name, Path.GetFileName(file)).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+                        this.graph.FindNode(Path.GetFileName(file)).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+                        this.tail = dir;
+                        while(this.tail.FullName != this.startFullPath)
+                        {
+                            this.graph.FindNode(this.tail.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+                            this.graph.AddEdge(this.tail.Parent.Name, this.tail.Name).Attr.Color= Microsoft.Msagl.Drawing.Color.Green; ;
+                            this.tail = this.tail.Parent;
+                        }
+                        this.graph.FindNode(this.tail.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
 
-                        //this.found = true;
+                        //
                         if (this.allOccurance == false)
                         {
+                            this.found = true;
+                            return;
                             //System.Environment.Exit(0);
                         }
                     }
@@ -57,13 +70,16 @@ namespace dfsDavin
                 }
             }
             string[] children = Directory.GetDirectories(dir.FullName, "*", SearchOption.TopDirectoryOnly);
-            if (this.found == false)
+            if (this.found != true)
             {
                 foreach (string child in children)
                 {
                     this.graph.AddEdge(dir.Name, getFolderOfPath(child));
-                    this.DFS(child);
+                    this.recDFS(child);
                 }
+                //if this.head in childern:
+                //this.head = parent
+                //coloring parent
             }
         }
 

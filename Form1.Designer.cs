@@ -36,7 +36,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.radioBFS = new System.Windows.Forms.RadioButton();
             this.radioDFS = new System.Windows.Forms.RadioButton();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.isAllOccurance = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -116,16 +116,18 @@
             this.radioDFS.UseVisualStyleBackColor = true;
             this.radioDFS.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged_1);
             // 
-            // checkBox1
+            // isAllOccurance
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(62, 158);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(142, 19);
-            this.checkBox1.TabIndex = 7;
-            this.checkBox1.Text = "Search All Possibilities";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.isAllOccurance.AutoSize = true;
+            this.isAllOccurance.Checked = true;
+            this.isAllOccurance.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.isAllOccurance.Location = new System.Drawing.Point(62, 158);
+            this.isAllOccurance.Name = "isAllOccurance";
+            this.isAllOccurance.Size = new System.Drawing.Size(142, 19);
+            this.isAllOccurance.TabIndex = 7;
+            this.isAllOccurance.Text = "Search All Possibilities";
+            this.isAllOccurance.UseVisualStyleBackColor = true;
+            this.isAllOccurance.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // label3
             // 
@@ -144,7 +146,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.isAllOccurance);
             this.Controls.Add(this.radioDFS);
             this.Controls.Add(this.radioBFS);
             this.Controls.Add(this.label2);
@@ -170,7 +172,7 @@
         private Label label2;
         private RadioButton radioBFS;
         private RadioButton radioDFS;
-        private CheckBox checkBox1;
+        private CheckBox isAllOccurance;
         private Label label3;
     }
 }
