@@ -19,12 +19,12 @@ public class DFS
                 // if the current path is a directory, recur for it
                 if (Directory.Exists(path))
                 {
-                    folder_crawling(path,"asd");
+                    folder_crawling(path,find);
                 }
                 else
                 {
-                    // if file found write "File found!", otherwise write "File not found!", äsda
-                    if (find.Equals(path))
+                    // if file found write "File found!", otherwise write "File not found!"
+                    if (Path.GetFileName(path) == find)
                     {
                         Console.WriteLine("File found!");
                     }

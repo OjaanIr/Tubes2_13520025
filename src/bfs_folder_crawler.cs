@@ -39,14 +39,14 @@ public class BFS
                     else
                     {
                         // if file found set found variable to true
-                        if (find.Equals(path))
+                        if (Path.GetFileName(path) == find)
                         {
                             found = true;
                         }
                     }
                 }
             }
-        } while (!found);
+        } while (queue.Count() != 0 && !found);
         
         // if file found write "File found!", otherwise write "File not found!"
         if (found)

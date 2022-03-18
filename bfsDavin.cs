@@ -96,47 +96,43 @@ namespace bfsDavin
             string dir = new DirectoryInfo(@Path).Name;
             return dir;
         }
-    }
-   
 
-    public void solveBFS(DirectoryInfo dir){
-        string[] filePaths = Directory.GetFiles(dir.FullName, "*");
-        foreach (string file in filePaths)
-        {
-            if (this.found != true)
+        public void solveBFS(DirectoryInfo dir){
+            string[] filePaths = Directory.GetFiles(dir.FullName, "*");
+            foreach (string file in filePaths)
             {
-                if (Path.GetFileName(file) == this.file_name)
+                if (this.found != true)
                 {
-                    //Console.WriteLine(Path.GetFileName(file) + " ketemu");
-                    this.graph.AddEdge(dir.Name, Path.GetFileName(file)).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
-                    this.graph.FindNode(Path.GetFileName(file)).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
-                    this.tail = dir;
-                    while(this.tail.FullName != this.startFullPath)
+                    if (Path.GetFileName(file) == this.file_name)
                     {
+                        //Console.WriteLine(Path.GetFileName(file) + " ketemu");
+                        this.graph.AddEdge(dir.Name, Path.GetFileName(file)).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+                        this.graph.FindNode(Path.GetFileName(file)).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+                        this.tail = dir;
+                        while(this.tail.FullName != this.startFullPath)
+                        {
+                            this.graph.FindNode(this.tail.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+                            this.graph.AddEdge(this.tail.Parent.Name, this.tail.Name).Attr.Color= Microsoft.Msagl.Drawing.Color.Green; ;
+                            this.tail = this.tail.Parent;
+                        }
                         this.graph.FindNode(this.tail.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
-                        this.graph.AddEdge(this.tail.Parent.Name, this.tail.Name).Attr.Color= Microsoft.Msagl.Drawing.Color.Green; ;
-                        this.tail = this.tail.Parent;
-                    }
-                    this.graph.FindNode(this.tail.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
 
-                    //
-                    if (this.allOccurance == false)
+                        //
+                        if (this.allOccurance == false)
+                        {
+                            this.found = true;
+                            return;
+                            //System.Environment.Exit(0);
+                        }
+                    }
+                    else
                     {
-                        this.found = true;
-                        return;
-                        //System.Environment.Exit(0);
+                        //Console.WriteLine(Path.GetFileName(file));
+                        this.graph.AddEdge(dir.Name,Path.GetFileName(file));
+
                     }
                 }
-                else
-                {
-                    //Console.WriteLine(Path.GetFileName(file));
-                    this.graph.AddEdge(dir.Name,Path.GetFileName(file));
-
-                }
-            }
-        }       
+            }       
+        }
     }
-    
-    
-
 }
