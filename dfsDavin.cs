@@ -44,8 +44,7 @@ namespace dfsDavin
             DirectoryInfo dir = new DirectoryInfo(dirpath);
             //Console.WriteLine(dir.FullName);
             string[] filePaths = Directory.GetFiles(dir.FullName, "*");
-            if (filePaths.Length == 0) { 
-            }
+
             foreach (string file in filePaths)
             {
                 if (this.found != true)
@@ -72,13 +71,7 @@ namespace dfsDavin
                     if(this.found != true)
                     {
                         this.tail = dir;
-                        while (!(this.redArr.Contains(dir.FullName) || this.greenArr.Contains(dir.FullName)))
-                        {
-                            this.redArr.Add(dir.FullName);
-
-                            this.tail = this.tail.Parent;
-
-                        }
+                        this.getRedNode(dir.FullName);
                     }
                 }
             }
@@ -106,10 +99,25 @@ namespace dfsDavin
         public void getBlackNode(string path)
         {
 
-            while (!(this.greenArr.Contains(path) || this.blackArr.Contains(path) && path!=this.startFullPath)){
+            while (!(this.greenArr.Contains(path) || this.blackArr.Contains(path)) && path!=this.startFullPath){
                 this.blackArr.Add(path);
                 DirectoryInfo p = new DirectoryInfo(@path);
                 path = p.Parent.FullName;
+            }
+        }
+
+        public void getRedNode(string path)
+        {
+
+            while (!(this.greenArr.Contains(path) || this.redArr.Contains(path)) && path != this.startFullPath)
+            {
+                if (this.blackArr.Contains(path))
+                {
+                    this.blackArr.Remove(path);
+                }
+                this.redArr.Add(path);
+                DirectoryInfo pr = new DirectoryInfo(@path);
+                 
             }
         }
 
@@ -143,6 +151,12 @@ namespace dfsDavin
             {
                 DirectoryInfo s = new DirectoryInfo(p);
                 this.graph.AddEdge(s.Parent.Name, s.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
+            });
+
+            this.blackArr.ForEach(p =>
+            {
+                DirectoryInfo s = new DirectoryInfo(p);
+                this.graph.AddEdge(s.Parent.Name, s.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Black;
             });
             return this.graph;
         }
