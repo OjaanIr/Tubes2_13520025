@@ -2,32 +2,62 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
-public class BFS
+namespace BFSFolderCrawler
 {
-    // Traverse a given directory using BFS to find specified file
-    public static void folder_crawling(string start, string find)
+    public class BFS
     {
-        // Create queue to store directories
-        Queue<string> queue = new Queue<string>();
+        private string file_name;
+        private string startFullPath;
+        private bool found;
+        private bool allOccurance;
+        private DirectoryInfo tail;
+        private Microsoft.Msagl.Drawing.Graph graph;
 
-        // initialize a boolean variable
-        bool found = false;
-
-        // add starting directory to queue
-        queue.Enqueue(start);
-
-        // loop until whether specified file is found or not
-        do
+        public BFS(string file_name, bool allOccurance)
         {
-            // get the next file/directory from queue
-            string current_dir = queue.Dequeue();
+            this.file_name = file_name;
+            this.found = false;
+            this.allOccurance = allOccurance;
+        }
 
-            // get the list of all files and directories in current_dir
-            string[] list_of_files_and_directories = Directory.GetFileSystemEntries(current_dir, "*", SearchOption.TopDirectoryOnly);
+        private string getFolderOfPath(string Path)
+        {
+            string dir = new DirectoryInfo(@Path).Name;
+            return dir;
+        }
 
-            // check whether list_of_files_and_directories is null or not
-            if (list_of_files_and_directories != null)
+        public Microsoft.Msagl.Drawing.Graph buildGraph(string dirpath)
+        {
+            this.graph = new Microsoft.Msagl.Drawing.Graph("graph");
+            this.startFullPath = dirpath;
+            this.graph.AddNode(getFolderOfPath(dirpath));
+            folder_crawling(dirpath);
+            return this.graph;
+        }
+
+        // Traverse a given directory using BFS to find specified file
+        public static void folder_crawling(string dirpath)
+        {
+            // Create queue to store directories
+            Queue<string> queue = new Queue<string>();
+
+            // initialize a boolean variable
+            bool found = false;
+
+            // add starting directory to queue
+            queue.Enqueue(dirpath);
+
+            // loop until whether specified file is found or not
+            do
             {
+                // get the next file/directory from queue
+                string current_dir = queue.Dequeue();
+
+                DirectoryInfo dir = new DirectoryInfo(current_dir);
+
+                // get the list of all files and directories in current_dir
+                string[] list_of_files_and_directories = Directory.GetFileSystemEntries(dir.FullName, "*", SearchOption.TopDirectoryOnly);
+
                 // iterate every files and directories in the list_of_files_and_directories
                 foreach (string path in list_of_files_and_directories)
                 {
@@ -35,27 +65,37 @@ public class BFS
                     if (Directory.Exists(path))
                     {
                         queue.Enqueue(path);
+                        this.graph.AddEdge(dir.Name, getFolderOfPath(path));
+                        folder_crawling(path);
                     }
                     else
                     {
-                        // if file found set found variable to true
-                        if (find.Equals(path))
+                        if (Path.GetFileName(path) == this.file_name)
                         {
-                            found = true;
+                            this.graph.AddEdge(dir.Name, Path.GetFileName(path)).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+                            this.graph.FindNode(Path.GetFileName(path)).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+                            this.tail = dir;
+                            while (this.tail.FullName != this.startFullPath)
+                            {
+                                this.graph.FindNode(this.tail.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+                                this.graph.AddEdge(this.tail.Parent.Name, this.tail.Name).Attr.Color= Microsoft.Msagl.Drawing.Color.Green; ;
+                                this.tail = this.tail.Parent;
+                            }
+                            this.graph.FindNode(this.tail.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+
+                            if (!this.allOccurance)
+                            {
+                                this.found = true;
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            this.graph.AddEdge(dir.Name,Path.GetFileName(file));
                         }
                     }
                 }
-            }
-        } while (!found);
-        
-        // if file found write "File found!", otherwise write "File not found!"
-        if (found)
-        {
-            Console.WriteLine("File found!");
-        }
-        else
-        {
-            Console.WriteLine("File not found!");
-        }
-    } 
+            } while (queue.Count() != 0 && !found);
+        } 
+    }
 }
