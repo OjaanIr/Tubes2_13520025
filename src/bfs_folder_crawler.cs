@@ -1,23 +1,108 @@
 using System;
-using System.IO;
+using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace BFSFolderCrawler
 {
-    public class BFS
+        class Edge
+        {
+            private string start;
+            private string end;
+            private string color; // set either black or red or green
+
+            public Edge(string start, string end)
+            {
+                this.start = start;
+                this.end = end;
+                this.color = "black"; //basic color is black (havent checked all)
+            }
+
+            public void setColorRed()
+            {
+                this.color = "red";
+            }
+
+            public void setColorGreen()
+            {
+                this.color = "green";
+            }
+
+            public void setColorBlack()
+            {
+                this.color = "black";
+            }
+
+            public string getEnd()
+            {
+                return this.end;
+            }
+
+            public string getStart()
+            {
+                return this.start;
+            }
+
+            public bool isEdgeInList(List<Edge> edges)
+            {
+                bool isFound = false;
+                edges.ForEach(e =>
+                {
+                    if(e.start == this.start && e.end == this.end)
+                    {
+                        isFound = true;
+                    }
+
+                });
+
+                return isFound;
+            }
+
+            public int getIdx(List<Edge> edges)
+            {
+                int i = 0;
+                int idx = 0;
+                bool isFound=false;
+                edges.ForEach(e =>
+                {
+                    if (e.start == this.start && e.end == this.end)
+                    {
+                        i = idx;
+                        isFound = true;
+
+                    }
+                    else
+                    {
+                        idx++;
+                    }
+
+                });
+                if(isFound) return i ;
+                else
+                {
+                    return -1;
+                }
+            }
+        }
+
+    public class FileDestination
     {
         private string file_name;
         private string startFullPath;
         private bool found;
         private bool allOccurance;
         private DirectoryInfo tail;
+        private List<Edge> redArr;
+        private List<Edge> greenArr;
+        private List<Edge> blackArr;
         private Microsoft.Msagl.Drawing.Graph graph;
 
-        public BFS(string file_name, bool allOccurance)
-        {
-            this.file_name = file_name;
-            this.found = false;
-            this.allOccurance = allOccurance;
+        public FileDestination(string nama, bool semua) {
+            file_name = nama;
+            found = false;
+            allOccurance = semua;
         }
 
         private string getFolderOfPath(string Path)
@@ -26,23 +111,25 @@ namespace BFSFolderCrawler
             return dir;
         }
 
-        public Microsoft.Msagl.Drawing.Graph buildGraph(string dirpath)
+        public Microsoft.Msagl.Drawing.Graph BFS(string dirpath)
         {
             this.graph = new Microsoft.Msagl.Drawing.Graph("graph");
             this.startFullPath = dirpath;
             this.graph.AddNode(getFolderOfPath(dirpath));
-            folder_crawling(dirpath);
-            return this.graph;
+            this.greenArr = new List<Edge>();
+            this.redArr = new List<Edge>();
+            this.blackArr = new List<Edge>();
+            recBFS(dirpath);
+            return this.printGraph();
         }
 
         // Traverse a given directory using BFS to find specified file
-        public static void folder_crawling(string dirpath)
+        public static void recBFS(string dirpath)
         {
             // Create queue to store directories
             Queue<string> queue = new Queue<string>();
 
-            // initialize a boolean variable
-            bool found = false;
+            // List<bool> visited = new List<bool>(); 
 
             // add starting directory to queue
             queue.Enqueue(dirpath);
@@ -65,37 +152,89 @@ namespace BFSFolderCrawler
                     if (Directory.Exists(path))
                     {
                         queue.Enqueue(path);
-                        this.graph.AddEdge(dir.Name, getFolderOfPath(path));
-                        folder_crawling(path);
+                        // this.graph.AddEdge(dir.Name, getFolderOfPath(path));
+                        // folder_crawling(path);
                     }
                     else
                     {
-                        if (Path.GetFileName(path) == this.file_name)
+                        if (!this.found)
                         {
-                            this.graph.AddEdge(dir.Name, Path.GetFileName(path)).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
-                            this.graph.FindNode(Path.GetFileName(path)).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+                            if (Path.GetFileName(path) == this.file_name)
+                            {
+                                Edge x = new Edge(dir.Name, Path.GetFileName(path));
+                                this.greenArr.Add(x);
+                                this.tail = dir;
+                                while(this.tail.FullName != this.startFullPath)
+                                {
+                                    Edge y = new Edge(this.tail.Parent.Name, this.tail.Name);
+                                    int idxInR = y.getIdx(this.redArr);
+                                    if (idxInR != -1)
+                                    {
+                                        this.redArr.RemoveAt(idxInR);
+                                    }
+                                    int idxInB = y.getIdx(this.blackArr);
+                                    if (idxInB!=-1)
+                                    {
+                                        this.blackArr.RemoveAt(idxInB);
+                                    }
+                                    this.greenArr.Add(y);
+
+                                    this.tail = this.tail.Parent;
+
+                                }
+                                //this.graph.FindNode(this.tail.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+
+                                if (!this.allOccurance)
+                                {
+                                    this.found = true;
+                                }
+                            }
+                            else
+                            {
+                                // this.graph.AddEdge(dir.Name,Path.GetFileName(file));
+                                Edge e = new Edge(dir.Name, Path.GetFileName(file));
+                                this.redArr.Add(e);
+                            }
+
                             this.tail = dir;
                             while (this.tail.FullName != this.startFullPath)
                             {
-                                this.graph.FindNode(this.tail.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
-                                this.graph.AddEdge(this.tail.Parent.Name, this.tail.Name).Attr.Color= Microsoft.Msagl.Drawing.Color.Green; ;
+                                Edge y = new Edge(this.tail.Parent.Name, this.tail.Name);
+                                if (!y.isEdgeInList(this.redArr))
+                                {
+                                    this.redArr.Add(y);
+                                }
+
                                 this.tail = this.tail.Parent;
                             }
-                            this.graph.FindNode(this.tail.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
-
-                            if (!this.allOccurance)
-                            {
-                                this.found = true;
-                                return;
-                            }
-                        }
-                        else
-                        {
-                            this.graph.AddEdge(dir.Name,Path.GetFileName(file));
                         }
                     }
                 }
             } while (queue.Count() != 0 && !found);
+
+            if (queue.Count() > 0)
+            {
+                foreach (string path in queue)
+                {
+                    DirectoryInfo path = new DirectoryInfo(path);
+                    Edge e = new Edge(path.Parent.Name, path.Name);
+                    this.blackArr.Add(e);
+                }
+            }
+        }
+
+        public Microsoft.Msagl.Drawing.Graph printGraph()
+        {
+            this.greenArr.ForEach(e =>
+            {
+                this.graph.AddEdge(e.getStart(), e.getEnd()).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+            });
+
+            this.redArr.ForEach(e =>
+            {
+                this.graph.AddEdge(e.getStart(), e.getEnd()).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
+            });
+            return this.graph;
         } 
     }
 }
