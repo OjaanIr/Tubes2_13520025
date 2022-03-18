@@ -36,10 +36,10 @@ namespace WinFormsApp2
 
         private void button2_Click(object sender, EventArgs e)
         {
+            Form graphWin = new Form();
             string rootDir = label1.Text;
             string lookFor = textBox1.Text;
             bool isFindAll = isAllOccurance.Checked;
-            string[] dirs = Directory.GetDirectories(@rootDir, "*", SearchOption.AllDirectories);
             string dirName = getFolderOfPath(rootDir);
             string[] filePaths = Directory.GetFiles(@rootDir, "*", SearchOption.TopDirectoryOnly);
             Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
@@ -84,10 +84,11 @@ namespace WinFormsApp2
             */
             
             viewer.Graph = graph;
-            this.SuspendLayout();
+            graphWin.SuspendLayout();
             viewer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Controls.Add(viewer);
-            this.ResumeLayout();
+            graphWin.Controls.Add(viewer);
+            graphWin.ResumeLayout();
+            graphWin.Show();
 
 
         }
