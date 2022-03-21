@@ -5,24 +5,19 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace dfsDavin
+namespace BFSFolderCrawler
 {
-  
-    class FileDestination {
+    class FileDestination
+    {
         private string file_name;
         private string startFullPath;
         private bool found;
         private bool allOccurance;
+        private DirectoryInfo tail;
         private List<string> redArr;
         private List<string> greenArr;
         private List<string> blackArr;
-        protected List<string> answer = new List<string>();
         private Microsoft.Msagl.Drawing.Graph graph;
-
-        public List<string> getAnswer()
-        {
-            return answer;
-        }
 
         public FileDestination(string nama, bool semua) {
             file_name = nama;
@@ -30,64 +25,74 @@ namespace dfsDavin
             allOccurance = semua;
         }
 
-        public Microsoft.Msagl.Drawing.Graph DFS(string dirpath)
+        public Microsoft.Msagl.Drawing.Graph BFS(string dirpath)
         {
             this.graph = new Microsoft.Msagl.Drawing.Graph("graph");
             this.startFullPath = dirpath;
             this.graph.AddNode(getFolderOfPath(dirpath));
-            this.greenArr = new List<string>();
-            this.redArr = new List<string>();
-            this.blackArr = new List<string>();
+            this.greenArr = new List<Edge>();
+            this.redArr = new List<Edge>();
+            this.blackArr = new List<Edge>();
 
-            recDFS(dirpath);
-
+            solveBFS(dirpath);
+            
             return this.printGraph();
         }
-        public void recDFS(string dirpath)
+
+        public void solveBFS(string dirpath)
         {
+            Queue<string> queue = new Queue<string>();
 
-            DirectoryInfo dir = new DirectoryInfo(dirpath);
-            //Console.WriteLine(dir.FullName);
-            string[] filePaths = Directory.GetFiles(dir.FullName, "*");
+            queue.Enqueue(dirpath);
 
-            foreach (string file in filePaths)
+            do 
             {
-                if (this.found != true)
+                string current_dir = queue.Dequeue();
+                DirectoryInfo dir = new DirectoryInfo(dirpath);
+                string[] filePaths = Directory.GetFiles(dir.FullName, "*");
+
+                foreach (string file in filePaths)
                 {
-                    if (Path.GetFileName(file) == this.file_name)
+                    if (this.found != true)
                     {
-                        this.answer.Add(file);
-                        this.greenArr.Add(file);
-                        this.getGreenNode(dir.FullName);
-
-
-                        if (!this.allOccurance)
+                        if (Path.GetFileName(file) == this.file_name)
                         {
-                            this.found = true;
+                            this.greenArr.Add(file);
+                            this.tail = dir;
+                            this.getGreenNode(dir.FullName);
+
+                            if (!this.allOccurance)
+                            {
+                                this.found = true;
+                            }
+                        }
+                        else
+                        {
+                            this.redArr.Add(file);
+                        }
+                    
+                        if(this.found != true)
+                        {
+                            this.tail = dir;
+                            this.getRedNode(dir.FullName);
                         }
                     }
-                    else
-                    {
-
-                        this.redArr.Add(file);
-                    }
-                
-                    if(this.found != true)
-                    {
-                        this.getRedNode(dir.FullName);
-                    }
                 }
-            }
-            string[] children = Directory.GetDirectories(dir.FullName, "*", SearchOption.TopDirectoryOnly);
-            if (this.found != true)
-            {
+                string[] children = Directory.GetDirectories(dir.FullName, "*", SearchOption.TopDirectoryOnly);                
                 foreach (string child in children)
                 {
-
                     this.blackArr.Add(child);
-                    this.recDFS(child);
+                    queue.Enqueue(child);
                 }
+            } while (queue.Count() != 0 && !this.found)
 
+            if (queue.Count() > 0)
+            {
+                foreach (string path in queue)
+                {
+                    DirectoryInfo dir = new DirectoryInfo(path);
+                    this.getBlackNode(dir.FullName);
+                }
             }
         }
 
@@ -142,17 +147,10 @@ namespace dfsDavin
 
         public Microsoft.Msagl.Drawing.Graph printGraph()
         {
-            DirectoryInfo p = new DirectoryInfo((this.startFullPath));
-            if (this.greenArr.Count != 0)
-            {
-                this.graph.AddNode(p.Name).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Green;
-            }
             this.greenArr.ForEach(p =>
             {
-
                 DirectoryInfo s = new DirectoryInfo(@p);
                 this.graph.AddEdge(s.Parent.Name, s.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
-                this.graph.FindNode(s.Name).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Green;
             });
 
             this.redArr.ForEach(p =>
@@ -168,11 +166,5 @@ namespace dfsDavin
             });
             return this.graph;
         }
-
     }
-   
-
-    
-    
-
 }

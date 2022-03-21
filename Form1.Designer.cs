@@ -42,7 +42,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(45, 111);
+            this.button1.Location = new System.Drawing.Point(182, 120);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(68, 25);
             this.button1.TabIndex = 0;
@@ -54,7 +54,7 @@
             // 
             this.searchButton.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.searchButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.searchButton.Location = new System.Drawing.Point(46, 343);
+            this.searchButton.Location = new System.Drawing.Point(183, 352);
             this.searchButton.Name = "searchButton";
             this.searchButton.Size = new System.Drawing.Size(148, 23);
             this.searchButton.TabIndex = 1;
@@ -65,7 +65,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(128, 116);
+            this.label1.Location = new System.Drawing.Point(265, 125);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(121, 15);
             this.label1.TabIndex = 2;
@@ -75,9 +75,9 @@
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBox1.Location = new System.Drawing.Point(12, 227);
+            this.textBox1.Location = new System.Drawing.Point(82, 239);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(248, 35);
+            this.textBox1.Size = new System.Drawing.Size(384, 35);
             this.textBox1.TabIndex = 3;
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
@@ -85,7 +85,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(86, 197);
+            this.label2.Location = new System.Drawing.Point(223, 206);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(93, 15);
             this.label2.TabIndex = 4;
@@ -95,7 +95,7 @@
             // radioBFS
             // 
             this.radioBFS.AutoSize = true;
-            this.radioBFS.Location = new System.Drawing.Point(62, 293);
+            this.radioBFS.Location = new System.Drawing.Point(199, 302);
             this.radioBFS.Name = "radioBFS";
             this.radioBFS.Size = new System.Drawing.Size(44, 19);
             this.radioBFS.TabIndex = 5;
@@ -107,7 +107,7 @@
             // radioDFS
             // 
             this.radioDFS.AutoSize = true;
-            this.radioDFS.Location = new System.Drawing.Point(138, 293);
+            this.radioDFS.Location = new System.Drawing.Point(275, 302);
             this.radioDFS.Name = "radioDFS";
             this.radioDFS.Size = new System.Drawing.Size(45, 19);
             this.radioDFS.TabIndex = 6;
@@ -121,7 +121,7 @@
             this.isAllOccurance.AutoSize = true;
             this.isAllOccurance.Checked = true;
             this.isAllOccurance.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.isAllOccurance.Location = new System.Drawing.Point(62, 158);
+            this.isAllOccurance.Location = new System.Drawing.Point(199, 167);
             this.isAllOccurance.Name = "isAllOccurance";
             this.isAllOccurance.Size = new System.Drawing.Size(142, 19);
             this.isAllOccurance.TabIndex = 7;
@@ -133,7 +133,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Haettenschweiler", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(45, 34);
+            this.label3.Location = new System.Drawing.Point(182, 43);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(202, 50);
             this.label3.TabIndex = 8;
@@ -144,7 +144,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(606, 450);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.isAllOccurance);
             this.Controls.Add(this.radioDFS);
