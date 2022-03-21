@@ -1,10 +1,13 @@
 using System;
 using System.IO;
+using System.Text;
 using dfsDavin;
 namespace WinFormsApp2
 {
     public partial class Form1 : Form
     {
+        private LinkLabel LinkLabel1;
+        private string links;
         public Form1()
         {
             InitializeComponent();
@@ -36,19 +39,23 @@ namespace WinFormsApp2
 
         private void button2_Click(object sender, EventArgs e)
         {
+            Form graphWin = new Form();
             string rootDir = label1.Text;
             string lookFor = textBox1.Text;
             bool isFindAll = isAllOccurance.Checked;
-            string[] dirs = Directory.GetDirectories(@rootDir, "*", SearchOption.AllDirectories);
             string dirName = getFolderOfPath(rootDir);
             string[] filePaths = Directory.GetFiles(@rootDir, "*", SearchOption.TopDirectoryOnly);
             Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
-            Microsoft.Msagl.Drawing.Graph graph;
+            Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
 
             if (rootDir== "No Directory Selected")
             {
                 return;
             }
+            var links = new List<LinkLabel.Link>();
+            var stringBuilder = new StringBuilder();
+            this.LinkLabel1 = new LinkLabel();
+            this.LinkLabel1.AutoSize = true;
             //string mode;
             if (radioBFS.Checked && lookFor!="")
             {
@@ -56,39 +63,51 @@ namespace WinFormsApp2
             }
             else if(radioDFS.Checked && lookFor !="")
             {
-                //mode = "DFS";
-                
+                FileDestination filed = new FileDestination(lookFor, isFindAll);
+                graph = filed.DFS(rootDir);
+                this.LinkLabel1.Text = "";
+                int count = 0;
+                filed.getAnswer().ForEach(x =>
+                {
+                    DirectoryInfo res = new DirectoryInfo(x);
                 
 
+                    count++;
+                    this.LinkLabel1.Text += count + " ";
+                    links.Add(new LinkLabel.Link(2*(count-1), 2*(count-1)+1, res.Parent.FullName));
+                    
+                });
+                foreach(var link in links)
+                {
+                    this.LinkLabel1.Links.Add(link);
+                }
+                this.LinkLabel1.Location = new Point(10, graphWin.Height -100);
+                this.LinkLabel1.LinkClicked += (s, e) => {
+                    System.Diagnostics.Process.Start("explorer.exe", (string)e.Link.LinkData);
+                };
+                graphWin.Controls.Add(this.LinkLabel1);
+                
             }
             else
             {
                 return;
             }
-            FileDestination filed = new FileDestination(lookFor, isFindAll);
-            graph = filed.DFS(rootDir);
 
             
-            /*
-            foreach (string dir in dirs)
-            {
-                string folderName = getFolderOfPath(dir);
-                graph.AddEdge(dirName, folderName);
-            }
-
-            foreach (string filePath in filePaths)
-            {
-                string fileName = Path.GetFileName(filePath);
-                graph.AddEdge(dirName, fileName);
-            }
-            */
+         
             
             viewer.Graph = graph;
-            this.SuspendLayout();
+            graphWin.SuspendLayout();
             viewer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Controls.Add(viewer);
-            this.ResumeLayout();
+            graphWin.Controls.Add(viewer);
+            graphWin.ResumeLayout();
+            graphWin.Show();
 
+
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
 
         }
 
@@ -103,7 +122,7 @@ namespace WinFormsApp2
 
         }
 
-        private void radioButton1_CheckedChanged_1(object sender, EventArgs e)
+        private void radioButton1_CheckedChanged_1(object sender,EventArgs e)
         {
 
         }

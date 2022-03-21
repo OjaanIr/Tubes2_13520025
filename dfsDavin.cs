@@ -7,95 +7,22 @@ using System.Text;
 
 namespace dfsDavin
 {
-    class Edge
-    {
-        private string start;
-        private string end;
-        private string color; // set either black or red or green
-
-        public Edge(string start, string end)
-        {
-            this.start = start;
-            this.end = end;
-            this.color = "black"; //basic color is black (havent checked all)
-        }
-
-        public void setColorRed()
-        {
-            this.color = "red";
-        }
-
-        public void setColorGreen()
-        {
-            this.color = "green";
-        }
-
-        public void setColorBlack()
-        {
-            this.color = "black";
-        }
-
-        public string getEnd()
-        {
-            return this.end;
-        }
-
-        public string getStart()
-        {
-            return this.start;
-        }
-
-        public bool isEdgeInList(List<Edge> edges)
-        {
-            bool isFound = false;
-            edges.ForEach(e =>
-            {
-                if(e.start == this.start && e.end == this.end)
-                {
-                    isFound = true;
-                }
-
-            });
-
-            return isFound;
-        }
-
-        public int getIdx(List<Edge> edges)
-        {
-            int i = 0;
-            int idx = 0;
-            bool isFound=false;
-            edges.ForEach(e =>
-            {
-                if (e.start == this.start && e.end == this.end)
-                {
-                    i = idx;
-                    isFound = true;
-
-                }
-                else
-                {
-                    idx++;
-                }
-
-            });
-            if(isFound) return i ;
-            else
-            {
-                return -1;
-            }
-        }
-    }
+  
     class FileDestination {
         private string file_name;
         private string startFullPath;
         private bool found;
         private bool allOccurance;
-        private DirectoryInfo tail;
-        private List<Edge> redArr;
-        private List<Edge> greenArr;
-        private List<Edge> blackArr;
+        private List<string> redArr;
+        private List<string> greenArr;
+        private List<string> blackArr;
+        protected List<string> answer = new List<string>();
         private Microsoft.Msagl.Drawing.Graph graph;
+
+        public List<string> getAnswer()
+        {
+            return answer;
+        }
 
         public FileDestination(string nama, bool semua) {
             file_name = nama;
@@ -108,9 +35,9 @@ namespace dfsDavin
             this.graph = new Microsoft.Msagl.Drawing.Graph("graph");
             this.startFullPath = dirpath;
             this.graph.AddNode(getFolderOfPath(dirpath));
-            this.greenArr = new List<Edge>();
-            this.redArr = new List<Edge>();
-            this.blackArr = new List<Edge>();
+            this.greenArr = new List<string>();
+            this.redArr = new List<string>();
+            this.blackArr = new List<string>();
 
             recDFS(dirpath);
 
@@ -122,37 +49,17 @@ namespace dfsDavin
             DirectoryInfo dir = new DirectoryInfo(dirpath);
             //Console.WriteLine(dir.FullName);
             string[] filePaths = Directory.GetFiles(dir.FullName, "*");
-            if (filePaths.Length == 0) { 
-            }
+
             foreach (string file in filePaths)
             {
                 if (this.found != true)
                 {
                     if (Path.GetFileName(file) == this.file_name)
                     {
-                        //Console.WriteLine(Path.GetFileName(file) + " ketemu");
-                        Edge x = new Edge(dir.Name, Path.GetFileName(file));
-                        this.greenArr.Add(x);
-                        this.tail = dir;
-                        while(this.tail.FullName != this.startFullPath)
-                        {
-                            Edge y = new Edge(this.tail.Parent.Name, this.tail.Name);
-                            int idxInR = y.getIdx(this.redArr);
-                            if (idxInR != -1)
-                            {
-                                this.redArr.RemoveAt(idxInR);
-                            }
-                            int idxInB = y.getIdx(this.blackArr);
-                            if (idxInB!=-1)
-                            {
-                                this.blackArr.RemoveAt(idxInB);
-                            }
-                            this.greenArr.Add(y);
+                        this.answer.Add(file);
+                        this.greenArr.Add(file);
+                        this.getGreenNode(dir.FullName);
 
-                            this.tail = this.tail.Parent;
-
-                        }
-                        //this.graph.FindNode(this.tail.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
 
                         if (!this.allOccurance)
                         {
@@ -161,25 +68,13 @@ namespace dfsDavin
                     }
                     else
                     {
-                        //Console.WriteLine(Path.GetFileName(file));
-                        Edge e = new Edge(dir.Name, Path.GetFileName(file));
-                        this.redArr.Add(e);
+
+                        this.redArr.Add(file);
                     }
                 
                     if(this.found != true)
                     {
-                        this.tail = dir;
-                        while (this.tail.FullName != this.startFullPath)
-                        {
-                            Edge y = new Edge(this.tail.Parent.Name, this.tail.Name);
-                            if (!y.isEdgeInList(this.redArr))
-                            {
-                                this.redArr.Add(y);
-                            }
-
-                            this.tail = this.tail.Parent;
-
-                        }
+                        this.getRedNode(dir.FullName);
                     }
                 }
             }
@@ -188,12 +83,11 @@ namespace dfsDavin
             {
                 foreach (string child in children)
                 {
-                    //this.graph.AddEdge(dir.Name, getFolderOfPath(child));
+
+                    this.blackArr.Add(child);
                     this.recDFS(child);
                 }
-                //if this.head in childern:
-                //this.head = parent
-                //coloring parent
+
             }
         }
 
@@ -203,16 +97,74 @@ namespace dfsDavin
             return dir;
         }
 
+        public void getBlackNode(string path)
+        {
+
+            while (!(this.greenArr.Contains(path) || this.blackArr.Contains(path)) && path!=this.startFullPath){
+                this.blackArr.Add(path);
+                DirectoryInfo p = new DirectoryInfo(@path);
+                path = p.Parent.FullName;
+            }
+        }
+
+        public void getRedNode(string path)
+        {
+
+            while (!(this.greenArr.Contains(path) || this.redArr.Contains(path)) && path != this.startFullPath)
+            {
+                if (this.blackArr.Contains(path))
+                {
+                    this.blackArr.Remove(path);
+                }
+                this.redArr.Add(path);
+                DirectoryInfo pr = new DirectoryInfo(@path);
+                 
+            }
+        }
+
+        public void getGreenNode(string path)
+        {
+            while(!this.greenArr.Contains(path)&& this.startFullPath!= path)
+            {
+                if (this.redArr.Contains(path))
+                {
+                    this.redArr.Remove(path);
+                }
+                if (this.blackArr.Contains(path))
+                {
+                    this.blackArr.Remove(path);
+                }
+                this.greenArr.Add(path);
+                DirectoryInfo p = new DirectoryInfo(@path);
+                path = p.Parent.FullName;
+            }
+        }
+
         public Microsoft.Msagl.Drawing.Graph printGraph()
         {
-            this.greenArr.ForEach(e =>
+            DirectoryInfo p = new DirectoryInfo((this.startFullPath));
+            if (this.greenArr.Count != 0)
             {
-                this.graph.AddEdge(e.getStart(), e.getEnd()).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+                this.graph.AddNode(p.Name).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Green;
+            }
+            this.greenArr.ForEach(p =>
+            {
+
+                DirectoryInfo s = new DirectoryInfo(@p);
+                this.graph.AddEdge(s.Parent.Name, s.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+                this.graph.FindNode(s.Name).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Green;
             });
 
-            this.redArr.ForEach(e =>
+            this.redArr.ForEach(p =>
             {
-                this.graph.AddEdge(e.getStart(), e.getEnd()).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
+                DirectoryInfo s = new DirectoryInfo(p);
+                this.graph.AddEdge(s.Parent.Name, s.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
+            });
+
+            this.blackArr.ForEach(p =>
+            {
+                DirectoryInfo s = new DirectoryInfo(p);
+                this.graph.AddEdge(s.Parent.Name, s.Name).Attr.Color = Microsoft.Msagl.Drawing.Color.Black;
             });
             return this.graph;
         }
