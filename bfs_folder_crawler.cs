@@ -30,9 +30,9 @@ namespace BFSFolderCrawler
             this.graph = new Microsoft.Msagl.Drawing.Graph("graph");
             this.startFullPath = dirpath;
             this.graph.AddNode(getFolderOfPath(dirpath));
-            this.greenArr = new List<Edge>();
-            this.redArr = new List<Edge>();
-            this.blackArr = new List<Edge>();
+            this.greenArr = new List<String>();
+            this.redArr = new List<String>();
+            this.blackArr = new List<String>();
 
             solveBFS(dirpath);
             
@@ -45,7 +45,7 @@ namespace BFSFolderCrawler
 
             queue.Enqueue(dirpath);
 
-            do 
+            do
             {
                 string current_dir = queue.Dequeue();
                 DirectoryInfo dir = new DirectoryInfo(dirpath);
@@ -70,21 +70,21 @@ namespace BFSFolderCrawler
                         {
                             this.redArr.Add(file);
                         }
-                    
-                        if(this.found != true)
+
+                        if (this.found != true)
                         {
                             this.tail = dir;
                             this.getRedNode(dir.FullName);
                         }
                     }
                 }
-                string[] children = Directory.GetDirectories(dir.FullName, "*", SearchOption.TopDirectoryOnly);                
+                string[] children = Directory.GetDirectories(dir.FullName, "*", SearchOption.TopDirectoryOnly);
                 foreach (string child in children)
                 {
                     this.blackArr.Add(child);
                     queue.Enqueue(child);
                 }
-            } while (queue.Count() != 0 && !this.found)
+            } while (queue.Count() != 0 && !this.found);
 
             if (queue.Count() > 0)
             {
