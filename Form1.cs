@@ -1,7 +1,8 @@
 using System;
 using System.IO;
 using System.Text;
-using dfsDavin;
+using FolderCrawler;
+
 namespace WinFormsApp2
 {
     public partial class Form1 : Form
@@ -60,6 +61,29 @@ namespace WinFormsApp2
             if (radioBFS.Checked && lookFor!="")
             {
                 //mode = "BFS";
+                FileDestination filed = new FileDestination(lookFor, isFindAll);
+                graph = filed.BFS(rootDir);
+                this.LinkLabel1.Text = "";
+                int count = 0;
+                filed.getAnswer().ForEach(x =>
+                {
+                    DirectoryInfo res = new DirectoryInfo(x);
+                
+
+                    count++;
+                    this.LinkLabel1.Text += count + " ";
+                    links.Add(new LinkLabel.Link(2*(count-1), 2*(count-1)+1, res.Parent.FullName));
+                    
+                });
+                foreach(var link in links)
+                {
+                    this.LinkLabel1.Links.Add(link);
+                }
+                this.LinkLabel1.Location = new Point(10, graphWin.Height -100);
+                this.LinkLabel1.LinkClicked += (s, e) => {
+                    System.Diagnostics.Process.Start("explorer.exe", (string)e.Link.LinkData);
+                };
+                graphWin.Controls.Add(this.LinkLabel1);
             }
             else if(radioDFS.Checked && lookFor !="")
             {
@@ -92,9 +116,6 @@ namespace WinFormsApp2
             {
                 return;
             }
-
-            
-         
             
             viewer.Graph = graph;
             graphWin.SuspendLayout();
@@ -102,8 +123,6 @@ namespace WinFormsApp2
             graphWin.Controls.Add(viewer);
             graphWin.ResumeLayout();
             graphWin.Show();
-
-
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -137,5 +156,4 @@ namespace WinFormsApp2
 
         }
     }
-
 }
