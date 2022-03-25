@@ -32,6 +32,10 @@ cd bin/Release/net6.0-windows/publish
 
 - Run program dengan menjalankan file WinFormsApp2.exe
 
+## Link Penting
+- [Video](https://www.youtube.com/watch?v=aPQZ0sCv-Gw)
+- [Github](https://github.com/OjaanIr/BingungFirstSearch)
+- [Laporan](https://itbdsti-my.sharepoint.com/:w:/g/personal/13520025_mahasiswa_itb_ac_id/EQJ4N9mk2h1OiPou0rqVYw0BpLned-uH6GYpYAMRzU4MQw?rtime=MYYdFl0O2kg)
 
 ## Author
 <table>
