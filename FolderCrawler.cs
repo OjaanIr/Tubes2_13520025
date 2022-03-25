@@ -114,8 +114,8 @@ namespace FolderCrawler
             do
             {
                 string current_dir = queue.Dequeue();
-                DirectoryInfo dir = new DirectoryInfo(@current_dir);
-                string[] filePaths = Directory.GetFiles(@dir.FullName, "*");
+                DirectoryInfo dir = new DirectoryInfo(current_dir);
+                string[] filePaths = Directory.GetFiles(dir.FullName, "*");
 
                 foreach (string file in filePaths)
                 {
