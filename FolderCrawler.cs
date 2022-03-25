@@ -96,6 +96,7 @@ namespace FolderCrawler
             this.graph = new Microsoft.Msagl.Drawing.Graph("graph");
             this.startFullPath = dirpath;
             this.graph.AddNode(getFolderOfPath(dirpath));
+
             this.greenArr = new List<string>();
             this.redArr = new List<string>();
             this.blackArr = new List<string>();
@@ -110,7 +111,7 @@ namespace FolderCrawler
 
             queue.Enqueue(dirpath);
 
-            do 
+            do
             {
                 string current_dir = queue.Dequeue();
                 DirectoryInfo dir = new DirectoryInfo(current_dir);
@@ -135,20 +136,20 @@ namespace FolderCrawler
                         {
                             this.redArr.Add(file);
                         }
-                    
-                        if(this.found != true)
+
+                        if (this.found != true)
                         {
                             this.getRedNode(dir.FullName);
                         }
                     }
                 }
-                string[] children = Directory.GetDirectories(dir.FullName, "*", SearchOption.TopDirectoryOnly);                
+                string[] children = Directory.GetDirectories(@dir.FullName, "*", SearchOption.TopDirectoryOnly);
                 foreach (string child in children)
                 {
                     this.blackArr.Add(child);
                     queue.Enqueue(child);
                 }
-            } while (queue.Count() != 0 && !this.found)
+            } while (queue.Count() != 0 && !this.found);
 
             if (queue.Count() > 0)
             {
