@@ -45,6 +45,10 @@ namespace WinFormsApp2
             string lookFor = textBox1.Text;
             bool isFindAll = isAllOccurance.Checked;
             string dirName = getFolderOfPath(rootDir);
+            if(rootDir == "No Directory Selected")
+            {
+                return;
+            }
             string[] filePaths = Directory.GetFiles(@rootDir, "*", SearchOption.TopDirectoryOnly);
             Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
             Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
@@ -57,6 +61,7 @@ namespace WinFormsApp2
             var stringBuilder = new StringBuilder();
             this.LinkLabel1 = new LinkLabel();
             this.LinkLabel1.AutoSize = true;
+            long timeEst = 0;
             //string mode;
             if (radioBFS.Checked && lookFor!="")
             {
@@ -83,6 +88,9 @@ namespace WinFormsApp2
                 this.LinkLabel1.LinkClicked += (s, e) => {
                     System.Diagnostics.Process.Start("explorer.exe", (string)e.Link.LinkData);
                 };
+
+                timeEst = filed.getTime();
+
                 graphWin.Controls.Add(this.LinkLabel1);
             }
             else if(radioDFS.Checked && lookFor !="")
@@ -109,6 +117,8 @@ namespace WinFormsApp2
                 this.LinkLabel1.LinkClicked += (s, e) => {
                     System.Diagnostics.Process.Start("explorer.exe", (string)e.Link.LinkData);
                 };
+
+                timeEst = filed.getTime();
                 graphWin.Controls.Add(this.LinkLabel1);
                 
             }
@@ -116,7 +126,13 @@ namespace WinFormsApp2
             {
                 return;
             }
-            
+
+
+            Label time = new Label();
+            time.AutoSize = true;
+            time.Text = $"Elapsed Time in Milisecond is {timeEst} ms";
+            time.Location = new Point(graphWin.Width-200,graphWin.Height-100);
+            graphWin.Controls.Add(time);
             viewer.Graph = graph;
             graphWin.SuspendLayout();
             viewer.Dock = System.Windows.Forms.DockStyle.Fill;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-
+using System.Diagnostics;
 namespace FolderCrawler
 {
   
@@ -13,6 +13,7 @@ namespace FolderCrawler
         private string startFullPath;
         private bool found;
         private bool allOccurance;
+        private Stopwatch timeEst = new Stopwatch();
         private List<string> redArr;
         private List<string> greenArr;
         private List<string> blackArr;
@@ -38,9 +39,10 @@ namespace FolderCrawler
             this.greenArr = new List<string>();
             this.redArr = new List<string>();
             this.blackArr = new List<string>();
-
+            this.timeEst = Stopwatch.StartNew();
+            this.timeEst.Start();
             recDFS(dirpath);
-
+            this.timeEst.Stop();
             return this.printGraph();
         }
         public void recDFS(string dirpath)
@@ -101,8 +103,11 @@ namespace FolderCrawler
             this.redArr = new List<string>();
             this.blackArr = new List<string>();
 
+            this.timeEst = Stopwatch.StartNew();
+            this.timeEst.Start();
             solveBFS(dirpath);
-            
+            this.timeEst.Stop();
+
             return this.printGraph();
         }
         public void solveBFS(string dirpath)
@@ -204,7 +209,11 @@ namespace FolderCrawler
                 {
                     this.blackArr.Remove(path);
                 }
-                this.greenArr.Add(path);
+                if (this.startFullPath != path)
+                {
+                    this.greenArr.Add(path);
+                }
+                
                 DirectoryInfo p = new DirectoryInfo(@path);
                 path = p.Parent.FullName;
             }
@@ -239,5 +248,12 @@ namespace FolderCrawler
             return this.graph;
         }
 
+        public long getTime()
+        {
+            return this.timeEst.ElapsedMilliseconds;
+
+        } 
+
     }
+
 }
