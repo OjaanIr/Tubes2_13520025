@@ -17,6 +17,7 @@
 - Visual Studio
 
 ## Prasyarat
+**Install .NET Desktop Runtime (bila belum)**
 **Clone repository ini menggunakan command berikut (git bash)**
 ```
 $ git clone https://github.com/OjaanIr/BingungFirstSearch.git
