@@ -10,11 +10,18 @@
 - Sebuah program berbasis **GUI** (_graphical user interface_) tentang pengaplikasian algoritma BFS dan DFS dalam implementasi _folder crawling_
 - Program dibuat dalam **bahasa C#** dengan bantuan kakas Visual Studio .NET dan MSAGL
 
+## Kakas Yang Digunakan
+- C# 
+- C# Desktop App Form Template
+- MSGAL - Microsoft Drawing Library v. 1.1.11
+- Visual Studio
+
 ## Prasyarat
 **Clone repository ini menggunakan command berikut (git bash)**
 ```
 $ git clone https://github.com/OjaanIr/BingungFirstSearch.git
 ```
+Untuk menjalankan aplikasi ini anda hanya perlu menjalankan executeable file sebagai berikut.
 
 ## Run Program
 
