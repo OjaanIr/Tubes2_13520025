@@ -114,8 +114,8 @@ namespace FolderCrawler
             do
             {
                 string current_dir = queue.Dequeue();
-                DirectoryInfo dir = new DirectoryInfo(dirpath);
-                string[] filePaths = Directory.GetFiles(dir.FullName, "*");
+                DirectoryInfo dir = new DirectoryInfo(@current_dir);
+                string[] filePaths = Directory.GetFiles(@dir.FullName, "*");
 
                 foreach (string file in filePaths)
                 {
@@ -143,7 +143,7 @@ namespace FolderCrawler
                         }
                     }
                 }
-                string[] children = Directory.GetDirectories(dir.FullName, "*", SearchOption.TopDirectoryOnly);
+                string[] children = Directory.GetDirectories(@dir.FullName, "*", SearchOption.TopDirectoryOnly);
                 foreach (string child in children)
                 {
                     this.blackArr.Add(child);
