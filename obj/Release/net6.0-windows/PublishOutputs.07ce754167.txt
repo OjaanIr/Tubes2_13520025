@@ -1,0 +1,9 @@
+C:\Users\Kiki\OneDrive - Institut Teknologi Bandung\Tubes Stima\WinFormsApp2\WinFormsApp2\bin\Release\net6.0-windows\publish\WinFormsApp2.exe
+C:\Users\Kiki\OneDrive - Institut Teknologi Bandung\Tubes Stima\WinFormsApp2\WinFormsApp2\bin\Release\net6.0-windows\publish\WinFormsApp2.dll
+C:\Users\Kiki\OneDrive - Institut Teknologi Bandung\Tubes Stima\WinFormsApp2\WinFormsApp2\bin\Release\net6.0-windows\publish\WinFormsApp2.deps.json
+C:\Users\Kiki\OneDrive - Institut Teknologi Bandung\Tubes Stima\WinFormsApp2\WinFormsApp2\bin\Release\net6.0-windows\publish\WinFormsApp2.runtimeconfig.json
+C:\Users\Kiki\OneDrive - Institut Teknologi Bandung\Tubes Stima\WinFormsApp2\WinFormsApp2\bin\Release\net6.0-windows\publish\WinFormsApp2.pdb
+C:\Users\Kiki\OneDrive - Institut Teknologi Bandung\Tubes Stima\WinFormsApp2\WinFormsApp2\bin\Release\net6.0-windows\publish\AutomaticGraphLayout.dll
+C:\Users\Kiki\OneDrive - Institut Teknologi Bandung\Tubes Stima\WinFormsApp2\WinFormsApp2\bin\Release\net6.0-windows\publish\AutomaticGraphLayout.Drawing.dll
+C:\Users\Kiki\OneDrive - Institut Teknologi Bandung\Tubes Stima\WinFormsApp2\WinFormsApp2\bin\Release\net6.0-windows\publish\Microsoft.Msagl.GraphViewerGdi.dll
+C:\Users\Kiki\OneDrive - Institut Teknologi Bandung\Tubes Stima\WinFormsApp2\WinFormsApp2\bin\Release\net6.0-windows\publish\Microsoft.Msagl.WpfGraphControl.dll
