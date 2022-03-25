@@ -12,7 +12,7 @@
 
 ## Kakas Yang Digunakan
 - C# 
-- C# Desktop App Form Template
+- .NET Desktop App Form Template
 - MSGAL - Microsoft Drawing Library v. 1.1.11
 - Visual Studio
 
