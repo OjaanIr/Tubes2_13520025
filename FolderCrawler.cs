@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace dfsDavin
+namespace FolderCrawler
 {
   
     class FileDestination {
@@ -91,6 +91,76 @@ namespace dfsDavin
             }
         }
 
+        public Microsoft.Msagl.Drawing.Graph BFS(string dirpath)
+        {
+            this.graph = new Microsoft.Msagl.Drawing.Graph("graph");
+            this.startFullPath = dirpath;
+            this.graph.AddNode(getFolderOfPath(dirpath));
+
+            this.greenArr = new List<string>();
+            this.redArr = new List<string>();
+            this.blackArr = new List<string>();
+
+            solveBFS(dirpath);
+            
+            return this.printGraph();
+        }
+        public void solveBFS(string dirpath)
+        {
+            Queue<string> queue = new Queue<string>();
+
+            queue.Enqueue(dirpath);
+
+            do
+            {
+                string current_dir = queue.Dequeue();
+                DirectoryInfo dir = new DirectoryInfo(dirpath);
+                string[] filePaths = Directory.GetFiles(dir.FullName, "*");
+
+                foreach (string file in filePaths)
+                {
+                    if (this.found != true)
+                    {
+                        if (Path.GetFileName(file) == this.file_name)
+                        {
+                            this.answer.Add(file);
+                            this.greenArr.Add(file);
+                            this.getGreenNode(dir.FullName);
+
+                            if (!this.allOccurance)
+                            {
+                                this.found = true;
+                            }
+                        }
+                        else
+                        {
+                            this.redArr.Add(file);
+                        }
+
+                        if (this.found != true)
+                        {
+                            this.getRedNode(dir.FullName);
+                        }
+                    }
+                }
+                string[] children = Directory.GetDirectories(dir.FullName, "*", SearchOption.TopDirectoryOnly);
+                foreach (string child in children)
+                {
+                    this.blackArr.Add(child);
+                    queue.Enqueue(child);
+                }
+            } while (queue.Count() != 0 && !this.found);
+
+            if (queue.Count() > 0)
+            {
+                foreach (string path in queue)
+                {
+                    DirectoryInfo dir = new DirectoryInfo(path);
+                    this.getBlackNode(dir.FullName);
+                }
+            }
+        }
+
         private string getFolderOfPath(string Path)
         {
             string dir = new DirectoryInfo(@Path).Name;
@@ -170,9 +240,4 @@ namespace dfsDavin
         }
 
     }
-   
-
-    
-    
-
 }
